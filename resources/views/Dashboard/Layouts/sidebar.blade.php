@@ -1,0 +1,12 @@
+@if (auth()->guard('admin')->check())
+    @include('Dashboard.Layouts.SideBar.super-admin')
+@elseif (auth()->guard('library-admin')->check())
+    @include('Dashboard.Layouts.SideBar.library-admin')
+@else
+    <div class="main-menu menu-fixed menu-light menu-accordion    menu-shadow " data-scroll-to-active="true">
+        <div class="main-menu-content">
+            <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
+            </ul>
+        </div>
+    </div>
+@endif

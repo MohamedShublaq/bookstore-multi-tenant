@@ -1,0 +1,26 @@
+.dataTables_filter input {
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    padding: 6px 12px;
+    margin-left: 8px;
+    transition: all 0.2s ease-in-out;
+}
+
+.dataTables_filter input:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+}
+
+.dataTables_length select {
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    padding: 6px 12px;
+    transition: all 0.2s ease-in-out;
+}
+
+.dataTables_length select:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+}

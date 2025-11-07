@@ -1,0 +1,97 @@
+@extends('Dashboard.Layouts.app')
+
+@section('title', 'Users')
+
+@push('style')
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/Dashboard/css/datatables.css') }}">
+@endpush
+
+@section('content')
+    <div class="app-content content">
+        <div class="content-wrapper">
+            <div class="content-header row">
+                <div class="content-header-left col-md-6 col-12 mb-2">
+                    <h3 class="content-header-title">
+                        Users
+                    </h3>
+                </div>
+                <div class="content-body w-100">
+                    <section id="configuration">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-content collapse show">
+                                        <div class="card-body card-dashboard">
+                                            <table id="users-table"
+                                                class="table table-striped table-bordered zero-configuration">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Id</th>
+                                                        <th>First Name</th>
+                                                        <th>Last Name</th>
+                                                        <th>Email</th>
+                                                        <th>Phone</th>
+                                                        <th>Actions</th>
+                                                    </tr>
+                                                </thead>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+@endsection
+
+@push('js')
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            $('#users-table').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: '{{ route('library.users.data') }}',
+                columns: [{
+                        data: 'id',
+                        name: 'id',
+                        orderable: true
+                    },
+                    {
+                        data: 'first_name',
+                        name: 'first_name',
+                        orderable: true
+                    },
+                    {
+                        data: 'last_name',
+                        name: 'last_name',
+                        orderable: true
+                    },
+                    {
+                        data: 'email',
+                        name: 'email',
+                        orderable: true
+                    },
+                    {
+                        data: 'phone',
+                        name: 'phone',
+                        orderable: false
+                    },
+                    {
+                        data: 'actions',
+                        name: 'actions',
+                        orderable: false,
+                        searchable: false
+                    },
+                ],
+            });
+        });
+    </script>
+@endpush
