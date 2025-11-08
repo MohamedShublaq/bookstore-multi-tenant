@@ -54,5 +54,5 @@ Route::middleware('auth:library-admin')->prefix('library')->as('library.')->grou
         Route::get('generate-code', 'generateCode')->name('generateCode');
         Route::patch('{id}/change-status', 'changeStatus')->name('changeStatus');
     });
-    Route::resource('coupons', CouponController::class)->except('show');
+    Route::resource('coupons', CouponController::class);
 });

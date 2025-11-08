@@ -34,30 +34,41 @@ class AuthController extends Controller
 
             // SUBDOMAIN ACCESS - Library Admin
             if ($subdomain && $subdomain !== $mainDomain) {
+
                 $library = Library::where('slug', $subdomain)->firstOrFail();
+
+                if (! $library->status) {
+                    return back()->with('error', 'The library is inactive.');
+                }
 
                 $libraryAdmin = LibraryAdmin::where('email', $request->email)
                     ->where('library_id', $library->id)
                     ->first();
 
-                if ($libraryAdmin && Auth::guard('library-admin')->attempt([
-                    'email'    => $request->email,
+                if (! $libraryAdmin) {
+                    return back()->with('error', 'Invalid email or password.');
+                }
+
+                if (Auth::guard('library-admin')->attempt([
+                    'email' => $request->email,
                     'password' => $request->password
                 ])) {
                     $request->session()->regenerate();
                     return redirect()->intended(route('library.home'));
                 }
 
-                // MAIN DOMAIN ACCESS - Super Admin
-            } else {
-                if (Auth::guard('admin')->attempt([
-                    'email' => $request->email,
-                    'password' => $request->password
-                ])) {
-                    $request->session()->regenerate();
-                    return redirect()->intended(route('dashboard.home'));
-                }
+                return back()->with('error', 'Invalid email or password.');
             }
+
+            // MAIN DOMAIN ACCESS - Super Admin
+            if (Auth::guard('admin')->attempt([
+                'email' => $request->email,
+                'password' => $request->password
+            ])) {
+                $request->session()->regenerate();
+                return redirect()->intended(route('dashboard.home'));
+            }
+
             return back()->with('error', 'Invalid email or password.');
         } catch (\Exception $e) {
             return back()->with('error', 'An unexpected error occurred. Please try again.');

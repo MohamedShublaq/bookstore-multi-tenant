@@ -20,7 +20,7 @@ class CouponObserver
     {
         $this->handleDates($coupon);
 
-        if ($coupon->hasNoDates() && !$coupon->active()) {
+        if ($coupon->hasNoDates() && !$coupon->isActive()) {
             $coupon->status = DiscountStatus::Active;
             return;
         }
@@ -28,15 +28,15 @@ class CouponObserver
         $today = Carbon::today();
 
         if ($coupon->isDirty('start_date') || $coupon->isDirty('end_date')) {
-            if ($coupon->isWithinDateRange() && !$coupon->active() && !$coupon->inactive()) {
+            if ($coupon->isWithinDateRange() && !$coupon->isActive() && !$coupon->isInactive()) {
                 $coupon->status = DiscountStatus::Active;
             }
 
-            if ($today < $coupon->start_date && !$coupon->scheduled() && !$coupon->inactive()) {
+            if ($today < $coupon->start_date && !$coupon->isScheduled() && !$coupon->isInactive()) {
                 $coupon->status = DiscountStatus::Scheduled;
             }
 
-            if ($today >= $coupon->end_date && !$coupon->expired()) {
+            if ($today >= $coupon->end_date && !$coupon->isExpired()) {
                 $coupon->status = DiscountStatus::Expired;
             }
         }

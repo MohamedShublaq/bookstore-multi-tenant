@@ -46,10 +46,10 @@ class CouponController extends Controller
             $coupon->status_badge         = $coupon->showStatus();
             $coupon->applies_to_all_books = $coupon->showAppliesToAllBooks();
 
-            $icon = $coupon->inactive() ? 'la la-play' : 'la la-pause';
+            $icon = $coupon->isInactive() ? 'la la-play' : 'la la-pause';
             $label = match (true) {
-                $coupon->inactive() && ($coupon->hasNoDates() || $coupon->isWithinDateRange()) => 'Make Active',
-                $coupon->inactive() => 'Make Scheduled',
+                $coupon->isInactive() && ($coupon->hasNoDates() || $coupon->isWithinDateRange()) => 'Make Active',
+                $coupon->isInactive() => 'Make Scheduled',
                 default => 'Make Inactive',
             };
 
@@ -63,7 +63,13 @@ class CouponController extends Controller
                             <i class="la la-edit"></i> Edit
                         </a>';
 
-            if (!$coupon->expired()) {
+
+            $actions .= '
+                        <a class="dropdown-item" href="' . route('library.coupons.show', $coupon->id) . '">
+                            <i class="la la-eye"></i> Show
+                        </a>';
+
+            if (!$coupon->isExpired()) {
                 $actions .= '
                         <button class="dropdown-item btn-status" data-url="' . route('library.coupons.changeStatus', $coupon->id) . '">
                             <i class="' . $icon . '"></i> ' . $label . '
@@ -123,6 +129,9 @@ class CouponController extends Controller
             if ($request->has('books')) {
                 $coupon->books()->sync($request->books);
             }
+        } else {
+            $coupon->categories()->detach();
+            $coupon->books()->detach();
         }
     }
 
@@ -170,6 +179,12 @@ class CouponController extends Controller
         }
     }
 
+    public function show(string $id)
+    {
+        $coupon = Coupon::findOrFail($id);
+        return view('Library.Coupons.show', compact('coupon'));
+    }
+
     public function destroy(string $id)
     {
         try {
@@ -186,12 +201,12 @@ class CouponController extends Controller
         try {
             $coupon = Coupon::findOrFail($id);
 
-            if ($coupon->expired()) {
+            if ($coupon->isExpired()) {
                 return redirect()->back()->with('error', 'Cannot change status of expired coupon');
             }
 
             $newStatus = match (true) {
-                !$coupon->inactive() => DiscountStatus::Inactive,
+                !$coupon->isInactive() => DiscountStatus::Inactive,
                 $coupon->hasNoDates() => DiscountStatus::Active,
                 $coupon->isWithinDateRange() => DiscountStatus::Active,
                 default => DiscountStatus::Scheduled
