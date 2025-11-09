@@ -9,3 +9,4 @@ Artisan::command('inspire', function () {
 })->purpose('Display an inspiring quote');
 
 app(Schedule::class)->command('app:change-coupon-status')->timezone('Africa/Cairo')->daily();
+app(Schedule::class)->command('app:change-flash-sale-status')->timezone('Africa/Cairo')->everyMinute();

@@ -7,6 +7,7 @@ use App\Http\Controllers\Library\CategoryController;
 use App\Http\Controllers\Library\ChangePasswordController;
 use App\Http\Controllers\Library\ContactController;
 use App\Http\Controllers\Library\CouponController;
+use App\Http\Controllers\Library\FlashSaleController;
 use App\Http\Controllers\Library\HomeController;
 use App\Http\Controllers\Library\LanguageController;
 use App\Http\Controllers\Library\PublisherController;
@@ -55,4 +56,9 @@ Route::middleware('auth:library-admin')->prefix('library')->as('library.')->grou
         Route::patch('{id}/change-status', 'changeStatus')->name('changeStatus');
     });
     Route::resource('coupons', CouponController::class);
+    Route::controller(FlashSaleController::class)->prefix('flash-sales')->as('flash-sales.')->group(function () {
+        Route::get('data', 'getFlashSales')->name('data');
+        Route::patch('{id}/change-status', 'changeStatus')->name('changeStatus');
+    });
+    Route::resource('flash-sales', FlashSaleController::class);
 });

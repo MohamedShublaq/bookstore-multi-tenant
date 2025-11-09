@@ -1,6 +1,6 @@
 @extends('Dashboard.Layouts.app')
 
-@section('title', 'Coupon Details')
+@section('title', 'Flash Sale Details')
 
 @push('style')
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/Dashboard/vendors/css/forms/selects/select2.min.css') }}">
@@ -45,7 +45,7 @@
 
             <div class="content-header row">
                 <div class="content-header-left col-md-6 col-12 mb-2">
-                    <h3 class="content-header-title">Coupon Details</h3>
+                    <h3 class="content-header-title">Flash Sale Details</h3>
                 </div>
             </div>
 
@@ -61,32 +61,27 @@
 
                                     <div class="row">
                                         <div class="col-md-6 mb-3">
-                                            <div class="info-label">Code</div>
-                                            <div class="info-value">{{ $coupon->code }}</div>
-                                        </div>
-
-                                        <div class="col-md-6 mb-3">
-                                            <div class="info-label">Status</div>
-                                            <div class="info-value">
-                                                {!! $coupon->showStatus() !!}
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-6 mb-3">
                                             <div class="info-label">Discount Type</div>
                                             <div class="info-value">
-                                                {{ $coupon->discount_type->name }}
+                                                {{ $flashSale->discount_type->name }}
                                             </div>
                                         </div>
 
                                         <div class="col-md-6 mb-3">
                                             <div class="info-label">Discount Value</div>
                                             <div class="info-value">
-                                                @if ($coupon->discount_type === \App\Enums\DiscountType::Percentage)
-                                                    {{ $coupon->discount_value }} %
+                                                @if ($flashSale->discount_type === \App\Enums\DiscountType::Percentage)
+                                                    {{ $flashSale->discount_value }} %
                                                 @else
-                                                    {{ $coupon->discount_value }} {{ app('library')->currency ?? 'USD' }}
+                                                    {{ $flashSale->discount_value }} {{ app('library')->currency ?? 'USD' }}
                                                 @endif
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6 mb-3">
+                                            <div class="info-label">Status</div>
+                                            <div class="info-value">
+                                                {!! $flashSale->showStatus() !!}
                                             </div>
                                         </div>
                                     </div>
@@ -98,35 +93,35 @@
 
                                     <div class="row">
                                         <div class="col-md-6 mb-3">
-                                            <div class="info-label">Start Date</div>
+                                            <div class="info-label">Start At</div>
                                             <div class="info-value">
-                                                {{ $coupon->start_date ? $coupon->start_date : '—' }}
+                                                {{ $flashSale->start_at_format }}
                                             </div>
                                         </div>
 
                                         <div class="col-md-6 mb-3">
-                                            <div class="info-label">End Date</div>
+                                            <div class="info-label">End At</div>
                                             <div class="info-value">
-                                                {{ $coupon->end_date ? $coupon->end_date : '—' }}
+                                                {{ $flashSale->end_at_format }}
                                             </div>
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="info-box">
-                                    <div class="section-title">Coupon Scope</div>
+                                    <div class="section-title">Flash Sale Scope</div>
 
                                     <div class="info-label mb-2">Applies to all books?</div>
                                     <div class="info-value mb-3">
-                                        {{ $coupon->applies_to_all_books ? 'Yes' : 'No' }}
+                                        {{ $flashSale->applies_to_all_books ? 'Yes' : 'No' }}
                                     </div>
 
-                                    @unless ($coupon->applies_to_all_books)
+                                    @unless ($flashSale->applies_to_all_books)
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="info-label">Categories</div>
                                                 <select disabled name="categories[]" class="select2-tags form-control" multiple>
-                                                    @foreach ($coupon->categories as $category)
+                                                    @foreach ($flashSale->categories as $category)
                                                         <option selected>{{ $category->name }}</option>
                                                     @endforeach
                                                 </select>
@@ -134,7 +129,7 @@
                                             <div class="col-md-6">
                                                 <div class="info-label">Books</div>
                                                 <select disabled name="books[]" class="select2-tags form-control" multiple>
-                                                    @foreach ($coupon->books as $book)
+                                                    @foreach ($flashSale->books as $book)
                                                         <option selected>{{ $book->name }}</option>
                                                     @endforeach
                                                 </select>
@@ -144,39 +139,19 @@
                                 </div>
 
                                 <div class="info-box">
-                                    <div class="section-title">Restrictions</div>
-
-                                    <div class="row">
-                                        <div class="col-md-6 mb-3">
-                                            <div class="info-label">Usage Limit</div>
-                                            <div class="info-value">
-                                                {{ $coupon->usage_limit ?? 'Unlimited' }}
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-6 mb-3">
-                                            <div class="info-label">Per User Limit</div>
-                                            <div class="info-value">
-                                                {{ $coupon->per_user_limit ?? 'Unlimited' }}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="info-box">
                                     <div class="section-title">Created At</div>
 
                                     <div class="row">
                                         <div class="col-md-6 mb-3">
                                             <div class="info-value">
-                                                {{ $coupon->created_at }}
+                                                {{ $flashSale->created_at }}
                                             </div>
                                         </div>
                                     </div>
                                 </div>
 
-                                <a href="{{ route('library.coupons.edit', $coupon->id) }}" class="btn btn-primary mt-1">
-                                    Edit Coupon
+                                <a href="{{ route('library.flash-sales.edit', $flashSale->id) }}" class="btn btn-primary mt-1">
+                                    Edit Flash Sale
                                 </a>
 
                             </div>

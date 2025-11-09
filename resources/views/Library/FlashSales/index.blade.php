@@ -1,6 +1,6 @@
 @extends('Dashboard.Layouts.app')
 
-@section('title', 'Coupons')
+@section('title', 'Flash Sales')
 
 @push('style')
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
@@ -15,11 +15,11 @@
                     <h3 class="content-header-title">
                         @php
                             $title = match (true) {
-                                request()->filled('status') && request('status') == App\Enums\DiscountStatus::Active->value    => 'Active Coupons',
-                                request()->filled('status') && request('status') == App\Enums\DiscountStatus::Inactive->value  => 'Inactive Coupons',
-                                request()->filled('status') && request('status') == App\Enums\DiscountStatus::Scheduled->value => 'Scheduled Coupons',
-                                request()->filled('status') && request('status') == App\Enums\DiscountStatus::Expired->value   => 'Expired Coupons',
-                                default => 'All Coupons',
+                                request()->filled('status') && request('status') == App\Enums\DiscountStatus::Active->value    => 'Active Flash Sales',
+                                request()->filled('status') && request('status') == App\Enums\DiscountStatus::Inactive->value  => 'Inactive Flash Sales',
+                                request()->filled('status') && request('status') == App\Enums\DiscountStatus::Scheduled->value => 'Scheduled Flash Sales',
+                                request()->filled('status') && request('status') == App\Enums\DiscountStatus::Expired->value   => 'Expired Flash Sales',
+                                default => 'All Flash Sales',
                             };
                         @endphp
 
@@ -33,22 +33,21 @@
                                 <div class="card">
                                     @if (!request()->filled('status'))
                                         <div class="card-header d-flex justify-content-between align-items-center">
-                                            <a href="{{ route('library.coupons.create') }}" class="btn btn-info">
-                                                <i class="la la-plus"></i> Create Coupon
+                                            <a href="{{ route('library.flash-sales.create') }}" class="btn btn-info">
+                                                <i class="la la-plus"></i> Create Flash Sale
                                             </a>
                                         </div>
                                     @endif
                                     <div class="card-content collapse show">
                                         <div class="card-body card-dashboard">
-                                            <table id="coupons-table"
+                                            <table id="flash-sales-table"
                                                 class="table table-striped table-bordered zero-configuration">
                                                 <thead>
                                                     <tr>
                                                         <th>Id</th>
-                                                        <th>Code</th>
                                                         <th>Discount</th>
-                                                        <th>Start Date</th>
-                                                        <th>End Date</th>
+                                                        <th>Start At</th>
+                                                        <th>End At</th>
                                                         <th>Status</th>
                                                         <th>Applies to All Books?</th>
                                                         <th>Created at</th>
@@ -75,11 +74,11 @@
 
     <script>
         $(document).ready(function() {
-            $('#coupons-table').DataTable({
+            $('#flash-sales-table').DataTable({
                 processing: true,
                 serverSide: true,
                 ajax: {
-                    url: '{{ route('library.coupons.data') }}',
+                    url: '{{ route('library.flash-sales.data') }}',
                     data: function(d) {
                         d.status = '{{ request('status') }}';
                     }
@@ -90,23 +89,18 @@
                         orderable: true
                     },
                     {
-                        data: 'code',
-                        name: 'code',
-                        orderable: true
-                    },
-                    {
                         data: 'discount_value',
                         name: 'discount_value',
                         orderable: true
                     },
                     {
-                        data: 'start_date_format',
-                        name: 'start_date_format',
+                        data: 'start_at_format',
+                        name: 'start_at_format',
                         orderable: true
                     },
                     {
-                        data: 'end_date_format',
-                        name: 'end_date_format',
+                        data: 'end_at_format',
+                        name: 'end_at_format',
                         orderable: true
                     },
                     {

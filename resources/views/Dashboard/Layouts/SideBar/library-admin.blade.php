@@ -199,6 +199,58 @@
                 </ul>
             </li>
             <li class="nav-item">
+                <a href="#"><i class="la la-bolt"></i><span class="menu-title"
+                        data-i18n="nav.project.main">Flash Sales</span></a>
+                <ul class="menu-content">
+                    <li>
+                        <a class="menu-item d-flex justify-content-between align-items-center"
+                            href="{{ route('library.flash-sales.index') }}" data-i18n="nav.project.project_summary">
+                            <span>All Flash Sales</span>
+                            <span class="badge badge-info">{{$allFlashSalesCount}}</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="menu-item d-flex justify-content-between align-items-center"
+                            href="{{ route('library.flash-sales.index', ['status' => App\Enums\DiscountStatus::Active->value]) }}"
+                            data-i18n="nav.project.project_summary">
+                            <span>Active Flash Sales</span>
+                            <span class="badge badge-success">{{$activeFlashSalesCount}}</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="menu-item d-flex justify-content-between align-items-center"
+                            href="{{ route('library.flash-sales.index', ['status' => App\Enums\DiscountStatus::Inactive->value]) }}"
+                            data-i18n="nav.project.project_summary">
+                            <span>Inactive Flash Sales</span>
+                            <span class="badge badge-secondary">{{$inactiveFlashSalesCount}}</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="menu-item d-flex justify-content-between align-items-center"
+                            href="{{ route('library.flash-sales.index', ['status' => App\Enums\DiscountStatus::Scheduled->value]) }}"
+                            data-i18n="nav.project.project_summary">
+                            <span>Scheduled Flash Sales</span>
+                            <span class="badge badge-warning">{{$scheduledFlashSalesCount}}</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="menu-item d-flex justify-content-between align-items-center"
+                            href="{{ route('library.flash-sales.index', ['status' => App\Enums\DiscountStatus::Expired->value]) }}"
+                            data-i18n="nav.project.project_summary">
+                            <span>Expired Flash Sales</span>
+                            <span class="badge badge-danger">{{$expiredFlashSalesCount}}</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="menu-item d-flex justify-content-between align-items-center"
+                            href="{{ route('library.flash-sales.create') }}" data-i18n="nav.project.project_summary">
+                            <span>Create Flash Sale</span>
+                            <i class="la la-plus text-info"></i>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li class="nav-item">
                 <a href="{{ route('library.users.index') }}"
                     class="d-flex justify-content-between align-items-center">
                     <span><i class="la la-user"></i> Users</span>

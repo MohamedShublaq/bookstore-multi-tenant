@@ -5,17 +5,16 @@ namespace App\Http\Controllers\Library;
 use App\Enums\DiscountStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Library\CouponRequest;
-use App\Models\Book;
-use App\Models\Category;
 use App\Models\Coupon;
 use Illuminate\Support\Str;
 use App\Traits\DataTableTrait;
+use App\Traits\HasDiscountableItemsTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class CouponController extends Controller
 {
-    use DataTableTrait;
+    use DataTableTrait, HasDiscountableItemsTrait;
 
     public function index(Request $request)
     {
@@ -93,16 +92,6 @@ class CouponController extends Controller
         return response()->json($result);
     }
 
-    private function getAllBooks()
-    {
-        return Book::select('id', 'name')->get();
-    }
-
-    private function getAllCategories()
-    {
-        return Category::select('id', 'name')->get();
-    }
-
     private function getCouponData(CouponRequest $request)
     {
         return $request->only(
@@ -117,22 +106,6 @@ class CouponController extends Controller
                 'applies_to_all_books'
             ]
         );
-    }
-
-    private function syncCategoriesAndBooks(Coupon $coupon, CouponRequest $request)
-    {
-        if (! $coupon->applies_to_all_books) {
-            if ($request->has('categories')) {
-                $coupon->categories()->sync($request->categories);
-            }
-
-            if ($request->has('books')) {
-                $coupon->books()->sync($request->books);
-            }
-        } else {
-            $coupon->categories()->detach();
-            $coupon->books()->detach();
-        }
     }
 
     public function create()
