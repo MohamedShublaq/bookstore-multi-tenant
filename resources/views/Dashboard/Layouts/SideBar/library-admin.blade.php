@@ -264,6 +264,12 @@
                     <span class="badge badge-info">{{$messagesCount}}</span>
                 </a>
             </li>
+            <li class="nav-item">
+                <a href="{{ route('library.settings.index') }}"
+                    class="d-flex justify-content-between align-items-center">
+                    <span><i class="la la-cog"></i> Settings</span>
+                </a>
+            </li>
 
         </ul>
     </div>

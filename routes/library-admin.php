@@ -11,6 +11,7 @@ use App\Http\Controllers\Library\FlashSaleController;
 use App\Http\Controllers\Library\HomeController;
 use App\Http\Controllers\Library\LanguageController;
 use App\Http\Controllers\Library\PublisherController;
+use App\Http\Controllers\Library\SettingsController;
 use App\Http\Controllers\Library\ShippingAreaController;
 use App\Http\Controllers\Library\UserController;
 use Illuminate\Support\Facades\Route;
@@ -64,4 +65,8 @@ Route::middleware('auth:library-admin')
             Route::patch('{id}/change-status', 'changeStatus')->name('changeStatus');
         });
         Route::resource('flash-sales', FlashSaleController::class);
+        Route::controller(SettingsController::class)->prefix('settings')->as('settings.')->group(function () {
+            Route::get('', 'index')->name('index');
+            Route::patch('toggle-website-status', 'toggleWebsiteStatus')->name('toggleWebsiteStatus');
+        });
     });

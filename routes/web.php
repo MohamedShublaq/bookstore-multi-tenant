@@ -14,6 +14,7 @@ Route::domain(config('app.main_domain'))
     });
 
 Route::domain('{library}.' . config('app.main_domain'))
+    ->middleware('library.active')
     ->group(function () {
         Route::controller(AuthController::class)->group(function () {
             Route::prefix('login')->middleware('guest')->group(function () {

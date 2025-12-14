@@ -20,6 +20,8 @@ return new class extends Migration
             $table->string('currency');
             $table->string('logo')->nullable();
             $table->boolean('status')->default(1);
+            $table->boolean('is_published')->default(1);
+            $table->string('inactive_message')->nullable();
             $table->timestamps();
         });
     }

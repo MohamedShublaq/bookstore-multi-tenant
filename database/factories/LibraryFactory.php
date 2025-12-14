@@ -17,12 +17,13 @@ class LibraryFactory extends Factory
     public function definition(): array
     {
         return [
-            'name'     => fake()->name(),
-            'slug'     => fake()->unique()->company(),
-            'address'  => fake()->address(),
-            'phone'    => fake()->phoneNumber(),
-            'currency' => fake()->currencyCode(),
-            'status'   => fake()->boolean,
+            'name'         => fake()->name(),
+            'slug'         => fake()->unique()->company(),
+            'address'      => fake()->address(),
+            'phone'        => fake()->phoneNumber(),
+            'currency'     => fake()->currencyCode(),
+            'status'       => 1,
+            'is_published' => 1,
         ];
     }
 }

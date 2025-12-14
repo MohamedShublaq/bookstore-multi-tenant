@@ -16,6 +16,8 @@ class Library extends Model
         'currency',
         'logo',
         'status',
+        'is_published',
+        'inactive_message',
     ];
 
     public function getCreatedAtAttribute($val)

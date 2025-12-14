@@ -43,6 +43,7 @@ return Application::configure(basePath: dirname(__DIR__))
         // Route Middleware
         $middleware->alias([
             'library.manager'  => \App\Http\Middleware\LibraryManager::class,
+            'library.active'   => \App\Http\Middleware\EnsureLibraryIsActive::class,
         ]);
 
         //Global middlewares
