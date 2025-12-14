@@ -37,12 +37,12 @@ return Application::configure(basePath: dirname(__DIR__))
             if (Auth::guard('library-admin')->check()) {
                 return route('library.home');
             }
-            return route('home');
+            return route('website.home');
         });
 
         // Route Middleware
         $middleware->alias([
-            'library.manager' => \App\Http\Middleware\LibraryManager::class,
+            'library.manager'  => \App\Http\Middleware\LibraryManager::class,
         ]);
 
         //Global middlewares
